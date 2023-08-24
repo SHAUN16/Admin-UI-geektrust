@@ -21,7 +21,21 @@ const Dashboard = ({
     const [currentPage, setCurrentPage] = useState(1);
     const [mainCheckbox, setMainCheckbox] = useState(false);
     const [selectedRows, setSelectedRows] = useState([]);
-    const [searchText,setText] = useState("");
+    const [searchText, setText] = useState("");
+
+
+    const resetToFirstPageAndClearSearch = (newData) => {
+        setCurrentPage((prevPage) => {
+          const totalCount = newData.length;
+          const totalPageCount = Math.ceil(totalCount / pageSize);
+          if (prevPage === 1) return 1;
+          if (totalPageCount >= prevPage) return prevPage;
+          return (prevPage - 1);
+        }
+        );
+        setText((prevText)=>"");
+      }
+    
 
     const onSearch = (event) => {
         const text = event.target.value.toLowerCase();
@@ -35,7 +49,6 @@ const Dashboard = ({
         })
 
         setUserData(newData);
-
     }
 
     const handleRowSelection = (rowId, mainCheckbox) => {
@@ -54,7 +67,7 @@ const Dashboard = ({
         }
         else {
             if (selectedRows.includes(rowId)) {
-                setSelectedRows((prevSelectedRows)=>prevSelectedRows.filter((id) => id !== rowId));
+                setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((id) => id !== rowId));
             } else {
                 setSelectedRows([...selectedRows, rowId]);
             }
@@ -75,15 +88,7 @@ const Dashboard = ({
         setUserData(newData);
         setOriginalData(newData); // set the original data to new data to filter out deleted data on displaying the rows
         setSelectedRows([]);
-        setCurrentPage((prevPage) => {
-            const totalCount = newData.length;
-            const totalPageCount = Math.ceil(totalCount / pageSize);
-            if (prevPage === 1) return 1;
-            if (totalPageCount >= prevPage) return prevPage;
-            return (prevPage - 1);
-        }
-        );
-        setText("");
+        resetToFirstPageAndClearSearch(newData);
     };
 
 
@@ -98,27 +103,47 @@ const Dashboard = ({
 
     return (
         <>
-            <SearchBar onChange={onSearch} setText = {setText} searchText = {searchText} />
-            <Table
-                currentTable={currentTable.length ? currentTable : userData.slice(0, 10)}
-                setMainCheckbox={setMainCheckbox}
-                mainCheckbox={mainCheckbox}
-                handleDelete={handleDelete}
-                handleRowSelection={handleRowSelection}
-                selectedRows={selectedRows}
-                handleEdit={handleEdit}
-                handleConfirmEdit={handleEditValues}
-            />
-            <Pagination
-                className="pagination-bar"
-                currentPage={currentPage}
-                totalCount={userData.length}
-                pageSize={pageSize}
-                onPageChange={page => setCurrentPage(page)}
-            />
-            <Button style={{ margin: "2rem" , color:'maroon'}} variant="outlined" onClick={() => handleDelete()}>
-                Delete Selected
-            </Button>
+            {originalData.length ?
+                (
+                    <>
+                        <SearchBar onChange={onSearch} setText={setText} searchText={searchText} />
+                        <Table
+                            currentTable={currentTable.length ? currentTable : userData.slice(0, 10)}
+                            setMainCheckbox={setMainCheckbox}
+                            mainCheckbox={mainCheckbox}
+                            handleDelete={handleDelete}
+                            handleRowSelection={handleRowSelection}
+                            selectedRows={selectedRows}
+                            handleEdit={handleEdit}
+                            handleConfirmEdit={handleEditValues}
+                        />
+                        <Pagination
+                            className="pagination-bar"
+                            currentPage={currentPage}
+                            totalCount={userData.length}
+                            pageSize={pageSize}
+                            onPageChange={page => setCurrentPage(page)}
+                        />
+                        <Button
+                            className="delete-btn"
+                            style={{ margin: "2rem"}}
+                            color="error"
+                            variant="outlined"
+                            disabled={selectedRows.length === 0}
+                            onClick={() => handleDelete()}
+                        >
+                            Delete Selected
+                        </Button>
+
+                    </>
+                ) : (
+                    <>
+                        <section className="enpty-table">
+                            <h2>No members left. Refresh to get members back </h2>
+                        </section>
+                    </>
+                )
+            }
         </>
     );
 }

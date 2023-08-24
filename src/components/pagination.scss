@@ -1,7 +1,12 @@
+.section-pagination{
+  display:flex;
+  justify-content: center;
+}
+
 .pagination-container {
     display: flex;
     list-style-type: none;
-  
+
     .pagination-button {
       padding: 0 12px;
       height: 32px;
@@ -26,7 +31,7 @@
         cursor: pointer;
       }
   
-      &.selected {
+      &.action-btn {
         background-color: silver;
       }
   
