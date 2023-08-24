@@ -9,7 +9,6 @@ const Pagination = ({
     siblings = 1,
     currentPage,
     pageSize,
-    className,
 }) => {
 
     const pageRange = usePagination({
@@ -19,69 +18,55 @@ const Pagination = ({
         siblings,
     });
 
-    if (pageRange.length < 1 || currentPage === 0 ) {
+    if (pageRange.length < 1 || currentPage === 0) {
         return null;
     }
 
     let lastPage = pageRange[pageRange.length - 1];
-    
-    const goToFirstPage = () =>{
-        onPageChange((currentPage)=>1);
+
+    const goToFirstPage = () => {
+        onPageChange((currentPage) => 1);
     }
 
-    const goToLastPage = () =>{
-        onPageChange((currentPage)=>lastPage);
+    const goToLastPage = () => {
+        onPageChange((currentPage) => lastPage);
     }
 
     const goToNextPage = () => {
-        onPageChange((currentPage)=>currentPage + 1);
+        onPageChange((currentPage) => currentPage + 1);
     }
 
     const goToPreviousPage = () => {
-        onPageChange((currentPage)=>currentPage - 1);
+        onPageChange((currentPage) => currentPage - 1);
     }
 
 
     //classnames is a third-party package which is a solution for css in js
 
     return (
-        <ul className={classnames('pagination-container', { [className]: className })}>
-            <li
-                className={classnames('pagination-button', { disabled: currentPage === 1 })}
-                onClick={goToFirstPage}
-            >
-                <button className="first-page" disabled={currentPage===1}>First Page</button>
+        <ul className="pagination-container">
+            <li className={`pagination-button ${currentPage === 1 ? 'disabled' : ''}`} onClick={goToFirstPage}>
+                <button className="first-page" disabled={currentPage === 1}>First Page</button>
             </li>
-            <li
-                className={classnames('pagination-button', { disabled: currentPage === 1 })}
-                onClick={goToPreviousPage}
-            >
+            <li className={`pagination-button ${currentPage === 1 ? 'disabled' : ''}`} onClick={goToPreviousPage}>
                 <div className="arrow left"></div>
             </li>
-            {pageRange.map((page,idx) => {
-                if (page === DOTS)
-                    return <li key= {idx} className="pagination-button dots">&#8230;</li>;
-
+            {pageRange.map((page, idx) => {
                 return (
-                    <li key = {idx}
-                        className={classnames('pagination-button', { selected: page === currentPage })}
+                    <li
+                        key={idx}
+                        className={`pagination-button ${page === currentPage ? 'selected' : ''}`}
                         onClick={() => onPageChange(page)}
                     >
                         {page}
                     </li>
-                )
+                );
             })}
-            <li
-                className={classnames('pagination-button', { disabled: currentPage === lastPage })}
-                onClick={goToNextPage}
-            >
+            <li className={`pagination-button ${currentPage === lastPage ? 'disabled' : ''}`} onClick={goToNextPage}>
                 <div className="arrow right"></div>
             </li>
-            <li
-                className={classnames('pagination-button', { disabled: currentPage === lastPage })}
-                onClick={goToLastPage}
-            >
-                <button className="last-page"  disabled={ currentPage === lastPage}>Last Page</button>
+            <li className={`pagination-button ${currentPage === lastPage ? 'disabled' : ''}`} onClick={goToLastPage}>
+                <button className="last-page" disabled={currentPage === lastPage}>Last Page</button>
             </li>
         </ul>
     )
