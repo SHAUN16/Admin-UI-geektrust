@@ -37,7 +37,7 @@ function App() {
       console.error('An error occurred:', error.message);
       setLoading(false);
       setError(true);
-      alert('Some error occured while trying to fetch data')
+      window.alert('Some error occured while trying to fetch data')
     }
 
   }

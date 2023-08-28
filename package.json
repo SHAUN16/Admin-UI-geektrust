@@ -29,6 +29,13 @@
       "react-app/jest"
     ]
   },
+"jest": {
+    "coverageThreshold": {
+        "global": {
+            "lines": 80
+        }
+    }
+},
   "browserslist": {
     "production": [
       ">0.2%",

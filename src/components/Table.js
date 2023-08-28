@@ -48,6 +48,7 @@ const Table = ({
                     {currentTable.map(user => {
                         return (
                             <tr 
+                            data-testid = 'user-row'
                             key={user.id} 
                             style={{backgroundColor:selectedRows.includes(user.id) ? 'darkgrey':'#fafafa'}}
                             >

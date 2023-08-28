@@ -9,6 +9,7 @@ const Pagination = ({
     totalCount,
     currentPage,
     pageSize,
+    dataTestId,
 }) => {
 
     const getLastPage = () => {
@@ -57,7 +58,7 @@ const Pagination = ({
 
 
     return (
-        <div className="section-pagination">
+        <div className="section-pagination" data-testid={dataTestId}>
 
             <ul className="pagination-container">
                 <li className={`pagination-button ${currentPage === 1 ? 'disabled' : 'null'}`} onClick={goToFirstPage}>

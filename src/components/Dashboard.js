@@ -118,6 +118,7 @@ const Dashboard = ({
                             handleConfirmEdit={handleEditValues}
                         />
                         <Pagination
+                            dataTestId = "pagination-bar"
                             className="pagination-bar"
                             currentPage={currentPage}
                             totalCount={userData.length}
